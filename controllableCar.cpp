@@ -23,6 +23,10 @@ public:
   float acceleration;
   float retardation;
 
+  float sensorLength;
+  int sensorCount;
+  vector<float> sensorAngles;
+
   Vector2 origin;
 
   Car(float x, float y)
@@ -38,11 +42,15 @@ public:
 
     speed = 0.0f;
     acceleration = 1500.0f;
-    retardation = -2.0f;
+    retardation = -3.5f;
 
     width = 40;
     height = 20;
     origin = {width / 2, height / 2};
+
+    sensorLength = 200;
+    sensorCount = 5;
+    sensorAngles = {-45, -20, 0, 20, 45};
   }
 
   void Update(float dt)
@@ -79,6 +87,14 @@ public:
     DrawRectanglePro(rect, origin, angle, RED);
     rect.x = x;
     rect.y = y;
+
+    for (int i = 0; i < sensorCount; i++)
+    {
+      float sensorAngle = (angle + sensorAngles[i]) * DEG2RAD;
+      Vector2 sensorEnd = {x + cos(sensorAngle) * sensorLength, y + sin(sensorAngle) * sensorLength};
+
+      DrawLine(x, y, sensorEnd.x, sensorEnd.y, YELLOW);
+    }
   }
 };
 
