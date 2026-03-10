@@ -51,6 +51,45 @@ bool buttonHover(Rectangle rec)
   return false;
 }
 
+class Sensor
+{
+public:
+  float carX;
+  float carY;
+  float carAngle;
+
+  float sensorLength;
+  int sensorCount;
+  vector<float> sensorAngles;
+
+  Sensor()
+  {
+    sensorLength = 200;
+    sensorCount = 5;
+    sensorAngles = {-45, -20, 0, 20, 45};
+  }
+
+  void UpdateVal(float x, float y, float theta)
+  {
+    this->carX = x;
+    this->carY = y;
+    this->carAngle = theta;
+  }
+
+  void DrawSensor()
+  {
+    for (int i = 0; i < sensorCount; i++)
+    {
+      Vector2 intersection;
+      float sensorAngle = (carAngle + sensorAngles[i]) * DEG2RAD;
+      Vector2 sensorStart = {carX, carY};
+      Vector2 sensorEnd = {carX + cos(sensorAngle) * sensorLength, carY + sin(sensorAngle) * sensorLength};
+
+      DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
+    }
+  }
+};
+
 class Car
 {
 public:
@@ -69,6 +108,8 @@ public:
   float speed;
   float acceleration;
   float retardation;
+
+  Sensor sensor;
 
   float sensorLength;
   int sensorCount;
@@ -94,10 +135,6 @@ public:
     width = 40;
     height = 20;
     origin = {width / 2, height / 2};
-
-    sensorLength = 200;
-    sensorCount = 5;
-    sensorAngles = {-45, -20, 0, 20, 45};
   }
 
   void Update(float dt)
@@ -126,6 +163,7 @@ public:
 
     x += vel_x * dt;
     y += vel_y * dt;
+    sensor.UpdateVal(x, y, angle);
   }
 
   void Draw()
@@ -135,14 +173,7 @@ public:
     rect.x = x;
     rect.y = y;
 
-    for (int i = 0; i < sensorCount; i++)
-    {
-      float sensorAngle = (angle + sensorAngles[i]) * DEG2RAD;
-      Vector2 sensorStart = {x, y};
-      Vector2 sensorEnd = {x + cos(sensorAngle) * sensorLength, y + sin(sensorAngle) * sensorLength};
-
-      DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
-    }
+    sensor.DrawSensor();
   }
 };
 
