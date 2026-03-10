@@ -62,6 +62,8 @@ public:
   int sensorCount;
   vector<float> sensorAngles;
 
+  vector<Wall> walls;
+
   Sensor()
   {
     sensorLength = 200;
@@ -69,11 +71,13 @@ public:
     sensorAngles = {-45, -20, 0, 20, 45};
   }
 
-  void UpdateVal(float x, float y, float theta)
+  void UpdateVal(float x, float y, float theta, const vector<Wall> &walls)
   {
     this->carX = x;
     this->carY = y;
     this->carAngle = theta;
+
+    this->walls = walls;
   }
 
   void DrawSensor()
@@ -85,6 +89,11 @@ public:
       Vector2 sensorStart = {carX, carY};
       Vector2 sensorEnd = {carX + cos(sensorAngle) * sensorLength, carY + sin(sensorAngle) * sensorLength};
 
+      /*if (walls.size() != 0)
+      {
+        intersection = getIntersection(walls[0], sensorStart, sensorEnd);
+        cout << "INTERSECTION POINTS: " << intersection.x << "," << intersection.y << endl;
+      }*/
       DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
     }
   }
@@ -133,7 +142,7 @@ public:
     origin = {width / 2, height / 2};
   }
 
-  void Update(float dt)
+  void Update(float dt, const vector<Wall> &walls)
   {
     float rad = angle * DEG2RAD;
 
@@ -159,7 +168,7 @@ public:
 
     x += vel_x * dt;
     y += vel_y * dt;
-    sensor.UpdateVal(x, y, angle);
+    sensor.UpdateVal(x, y, angle, walls);
   }
 
   void Draw()
@@ -189,7 +198,7 @@ int main()
   while (!WindowShouldClose())
   {
     float dt = GetFrameTime();
-    car.Update(dt);
+    car.Update(dt, walls);
 
     // path mouse input
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_SHIFT))
@@ -203,6 +212,7 @@ int main()
       path.clear();
       walls.clear();
       trackSet = false;
+      cout << "cleared" << endl;
     }
 
     BeginDrawing();
