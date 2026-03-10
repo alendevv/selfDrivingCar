@@ -111,10 +111,6 @@ public:
 
   Sensor sensor;
 
-  float sensorLength;
-  int sensorCount;
-  vector<float> sensorAngles;
-
   Vector2 origin;
 
   Car(float x, float y)
