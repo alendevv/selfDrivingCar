@@ -132,7 +132,7 @@ public:
       else
       {
         if (i == 2)
-          DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, BLUE);
+          DrawLine(sensorStart, sensorEnd, BLUE);
       }
     }
   }
