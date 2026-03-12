@@ -121,11 +121,11 @@ public:
 
         if (hit)
         {
-          DrawLineV(sensorStart, closestPoint, RED);
+          DrawLineV(sensorStart, closestPoint, {255, 40, 40, 255});
         }
         else
         {
-          DrawLineV(sensorStart, sensorEnd, YELLOW);
+          DrawLineV(sensorStart, sensorEnd, {255, 220, 0, 255});
         }
       }
 
@@ -213,7 +213,7 @@ public:
   void Draw(bool trackSet)
   {
     Rectangle rect = {x, y, width, height};
-    DrawRectanglePro(rect, origin, angle, RED);
+    DrawRectanglePro(rect, origin, angle, {0, 200, 220, 255});
     rect.x = x;
     rect.y = y;
 
@@ -255,13 +255,13 @@ int main()
     }
 
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground({20, 20, 20, 255});
 
     // path drawing
     for (size_t i = 0; i + 1 < path.size(); i++)
     {
-      DrawLineV(path[i], path[i + 1], WHITE);
-      DrawCircle(path[i].x, path[i].y, 5, WHITE);
+      DrawLineV(path[i], path[i + 1], LIGHTGRAY);
+      DrawCircle(path[i].x, path[i].y, 5, LIGHTGRAY);
     }
     if (trackSet)
     {
